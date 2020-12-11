@@ -24,9 +24,9 @@ abstract class ReplacedElement extends StyledElement {
   PlaceholderAlignment alignment;
 
   ReplacedElement(
-      {String name,
-      Style style,
-      dom.Element node,
+      {String? name,
+      Style? style,
+      dom.Element? node,
       this.alignment = PlaceholderAlignment.aboveBaseline})
       : super(name: name, children: null, style: style, node: node);
 
@@ -34,11 +34,11 @@ abstract class ReplacedElement extends StyledElement {
     return elements
         .where((element) => element.localName == 'source')
         .map((element) {
-      return element.attributes['src'];
+      return element.attributes['src']!;
     }).toList();
   }
 
-  Widget toWidget(RenderContext context);
+  Widget? toWidget(RenderContext context);
 }
 
 /// [TextContentElement] is a [ContentElement] with plaintext as its content.
@@ -46,8 +46,8 @@ class TextContentElement extends ReplacedElement {
   String text;
 
   TextContentElement({
-    Style style,
-    this.text,
+    Style? style,
+    required this.text,
   }) : super(name: "[text]", style: style);
 
   @override
@@ -56,26 +56,27 @@ class TextContentElement extends ReplacedElement {
   }
 
   @override
-  Widget toWidget(_) => null;
+  Widget? toWidget(_) => null;
 }
 
 /// [ImageContentElement] is a [ReplacedElement] with an image as its content.
 /// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img
 class ImageContentElement extends ReplacedElement {
-  final String src;
-  final String alt;
+  final String? src;
+  final String? alt;
 
   ImageContentElement({
-    String name,
-    Style style,
+    required String name,
+    Style? style,
     this.src,
     this.alt,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
   Widget toWidget(RenderContext context) {
     Widget imageWidget;
+    final src = this.src;
     if (src == null) {
       imageWidget = Text(alt ?? "", style: context.style.generateTextStyle());
     } else if (src.startsWith("data:image") && src.contains("base64,")) {
@@ -83,7 +84,7 @@ class ImageContentElement extends ReplacedElement {
       precacheImage(
         MemoryImage(decodedImage),
         context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
+        onError: (exception, StackTrace? stackTrace) {
           context.parser.onImageError?.call(exception, stackTrace);
         },
       );
@@ -101,7 +102,7 @@ class ImageContentElement extends ReplacedElement {
       precacheImage(
         AssetImage(assetPath),
         context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
+        onError: (exception, StackTrace? stackTrace) {
           context.parser.onImageError?.call(exception, stackTrace);
         },
       );
@@ -118,7 +119,7 @@ class ImageContentElement extends ReplacedElement {
       precacheImage(
         NetworkImage(src),
         context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
+        onError: (exception, StackTrace? stackTrace) {
           context.parser.onImageError?.call(exception, stackTrace);
         },
       );
@@ -144,7 +145,7 @@ class ImageContentElement extends ReplacedElement {
               MultipleTapGestureRecognizer>(
             () => MultipleTapGestureRecognizer(),
             (instance) {
-              instance..onTap = () => context.parser.onImageTap?.call(src);
+              instance..onTap = () => context.parser.onImageTap?.call(src!);
             },
           ),
         },
@@ -155,18 +156,18 @@ class ImageContentElement extends ReplacedElement {
 
 /// [IframeContentElement is a [ReplacedElement] with web content.
 class IframeContentElement extends ReplacedElement {
-  final String src;
-  final double width;
-  final double height;
-  final NavigationDelegate navigationDelegate;
+  final String? src;
+  final double? width;
+  final double? height;
+  final NavigationDelegate? navigationDelegate;
 
   IframeContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.width,
     this.height,
-    dom.Element node,
+    dom.Element? node,
     this.navigationDelegate,
   }) : super(name: name, style: style, node: node);
 
@@ -189,21 +190,21 @@ class IframeContentElement extends ReplacedElement {
 
 /// [AudioContentElement] is a [ContentElement] with an audio file as its content.
 class AudioContentElement extends ReplacedElement {
-  final List<String> src;
-  final bool showControls;
-  final bool autoplay;
-  final bool loop;
-  final bool muted;
+  final List<String>? src;
+  final bool? showControls;
+  final bool? autoplay;
+  final bool? loop;
+  final bool? muted;
 
   AudioContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.showControls,
     this.autoplay,
     this.loop,
     this.muted,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
@@ -213,7 +214,7 @@ class AudioContentElement extends ReplacedElement {
       child: ChewieAudio(
         controller: ChewieAudioController(
           videoPlayerController: VideoPlayerController.network(
-            src.first ?? "",
+            src?.first ?? "",
           ),
           autoPlay: autoplay,
           looping: loop,
@@ -227,18 +228,18 @@ class AudioContentElement extends ReplacedElement {
 
 /// [VideoContentElement] is a [ContentElement] with a video file as its content.
 class VideoContentElement extends ReplacedElement {
-  final List<String> src;
-  final String poster;
-  final bool showControls;
-  final bool autoplay;
-  final bool loop;
-  final bool muted;
-  final double width;
-  final double height;
+  final List<String>? src;
+  final String? poster;
+  final bool? showControls;
+  final bool? autoplay;
+  final bool? loop;
+  final bool? muted;
+  final double? width;
+  final double? height;
 
   VideoContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.poster,
     this.showControls,
@@ -247,7 +248,7 @@ class VideoContentElement extends ReplacedElement {
     this.muted,
     this.width,
     this.height,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
@@ -258,10 +259,10 @@ class VideoContentElement extends ReplacedElement {
       child: Chewie(
         controller: ChewieController(
           videoPlayerController: VideoPlayerController.network(
-            src.first ?? "",
+            src?.first ?? "",
           ),
           placeholder: poster != null
-              ? Image.network(poster)
+              ? Image.network(poster!)
               : Container(color: Colors.black),
           autoPlay: autoplay,
           looping: loop,
@@ -277,11 +278,11 @@ class VideoContentElement extends ReplacedElement {
 /// [SvgContentElement] is a [ReplacedElement] with an SVG as its contents.
 class SvgContentElement extends ReplacedElement {
   final String data;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   SvgContentElement({
-    this.data,
+    required this.data,
     this.width,
     this.height,
   });
@@ -300,21 +301,21 @@ class EmptyContentElement extends ReplacedElement {
   EmptyContentElement({String name = "empty"}) : super(name: name);
 
   @override
-  Widget toWidget(_) => null;
+  Widget? toWidget(_) => null;
 }
 
 class RubyElement extends ReplacedElement {
   dom.Element element;
 
-  RubyElement({@required this.element, String name = "ruby"})
+  RubyElement({required this.element, String name = "ruby"})
       : super(name: name, alignment: PlaceholderAlignment.middle);
 
   @override
-  Widget toWidget(RenderContext context) {
-    dom.Node textNode;
+  Widget? toWidget(RenderContext context) {
+    dom.Node? textNode;
     List<Widget> widgets = <Widget>[];
     //TODO calculate based off of parent font size.
-    final rubySize = max(9.0, context.style.fontSize.size / 2);
+    final rubySize = max(9.0, context.style.fontSize!.size / 2);
     final rubyYPos = rubySize + rubySize / 2;
     element.nodes.forEach((c) {
       if (c.nodeType == dom.Node.TEXT_NODE) {
@@ -336,7 +337,7 @@ class RubyElement extends ReplacedElement {
                                   .generateTextStyle()
                                   .copyWith(fontSize: rubySize))))),
               Container(
-                  child: Text(textNode.text.trim(),
+                  child: Text(textNode!.text.trim(),
                       style: context.style.generateTextStyle())),
             ],
           );
@@ -355,12 +356,12 @@ class RubyElement extends ReplacedElement {
 
 ReplacedElement parseReplacedElement(
   dom.Element element,
-  NavigationDelegate navigationDelegateForIframe,
+  NavigationDelegate? navigationDelegateForIframe,
 ) {
   switch (element.localName) {
     case "audio":
       final sources = <String>[
-        if (element.attributes['src'] != null) element.attributes['src'],
+        if (element.attributes['src'] != null) element.attributes['src']!,
         ...ReplacedElement.parseMediaSources(element.children),
       ];
       return AudioContentElement(
@@ -394,7 +395,7 @@ ReplacedElement parseReplacedElement(
       );
     case "video":
       final sources = <String>[
-        if (element.attributes['src'] != null) element.attributes['src'],
+        if (element.attributes['src'] != null) element.attributes['src']!,
         ...ReplacedElement.parseMediaSources(element.children),
       ];
       return VideoContentElement(
@@ -427,7 +428,7 @@ ReplacedElement parseReplacedElement(
 // TODO(Sub6Resources): Remove when https://github.com/flutter/flutter/issues/36304 is resolved
 class PlatformViewVerticalGestureRecognizer
     extends VerticalDragGestureRecognizer {
-  PlatformViewVerticalGestureRecognizer({PointerDeviceKind kind})
+  PlatformViewVerticalGestureRecognizer({PointerDeviceKind? kind})
       : super(kind: kind);
 
   Offset _dragDistance = Offset.zero;

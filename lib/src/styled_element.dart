@@ -8,20 +8,21 @@ import 'package:html/src/query_selector.dart';
 /// A [StyledElement] applies a style to all of its children.
 class StyledElement {
   final String name;
-  final String elementId;
-  final List<String> elementClasses;
-  List<StyledElement> children;
-  Style style;
-  final dom.Node _node;
+  final String? elementId;
+  final List<String>? elementClasses;
+  List<StyledElement>? children;
+  Style? style;
+  final dom.Node? _node;
 
   StyledElement({
-    this.name = "[[No name]]",
+    String? name,
     this.elementId,
     this.elementClasses,
     this.children,
     this.style,
-    dom.Element node,
-  }) : this._node = node;
+    dom.Element? node,
+  }) : this.name = name ?? "[[No name]]",
+    this._node = node;
 
   bool matchesSelector(String selector) =>
       _node != null && matches(_node, selector);
@@ -32,7 +33,7 @@ class StyledElement {
       }) ??
       Map<String, String>();
 
-  dom.Element get element => _node;
+  dom.Element? get element => _node as dom.Element?;
 
   @override
   String toString() {

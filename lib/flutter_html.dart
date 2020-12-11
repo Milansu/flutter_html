@@ -32,8 +32,8 @@ class Html extends StatelessWidget {
   /// **style** Pass in the style information for the Html here.
   /// See [its wiki page](https://github.com/Sub6Resources/flutter_html/wiki/Style) for more info.
   Html({
-    Key key,
-    @required this.data,
+    Key? key,
+    required this.data,
     this.onLinkTap,
     this.customRender,
     this.onImageError,
@@ -45,30 +45,30 @@ class Html extends StatelessWidget {
   }) : super(key: key);
 
   final String data;
-  final OnTap onLinkTap;
-  final ImageErrorListener onImageError;
+  final OnTap? onLinkTap;
+  final ImageErrorListener? onImageError;
   final bool shrinkWrap;
 
   /// Properties for the Image widget that gets rendered by the rich text parser
-  final OnTap onImageTap;
+  final OnTap? onImageTap;
 
   final List<String> blacklistedElements;
 
   /// Either return a custom widget for specific node types or return null to
   /// fallback to the default rendering.
-  final Map<String, CustomRender> customRender;
+  final Map<String, CustomRender>? customRender;
 
   /// Fancy New Parser parameters
-  final Map<String, Style> style;
+  final Map<String, Style>? style;
 
   /// Decides how to handle a specific navigation request in the WebView of an
   /// Iframe. It's necessary to use the webview_flutter package inside the app
   /// to use NavigationDelegate.
-  final NavigationDelegate navigationDelegateForIframe;
+  final NavigationDelegate? navigationDelegateForIframe;
 
   @override
   Widget build(BuildContext context) {
-    final double width = shrinkWrap ? null : MediaQuery.of(context).size.width;
+    final double? width = shrinkWrap ? null : MediaQuery.of(context).size.width;
 
     return Container(
       width: width,

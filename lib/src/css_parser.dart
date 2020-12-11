@@ -31,8 +31,8 @@ Style inlineCSSToStyle(String inlineStyle) {
 }
 
 class DeclarationVisitor extends css.Visitor {
-  Map<String, List<css.Expression>> _result;
-  String _currentProperty;
+  late Map<String, List<css.Expression>> _result;
+  late String _currentProperty;
 
   Map<String, List<css.Expression>> getDeclarations(css.StyleSheet sheet) {
     _result = new Map<String, List<css.Expression>>();
@@ -50,14 +50,14 @@ class DeclarationVisitor extends css.Visitor {
   @override
   void visitExpressions(css.Expressions node) {
     node.expressions.forEach((expression) {
-      _result[_currentProperty].add(expression);
+      _result[_currentProperty]!.add(expression);
     });
   }
 }
 
 //Mapping functions
 class ExpressionMapping {
-  static Color expressionToColor(css.Expression value) {
+  static Color? expressionToColor(css.Expression value) {
     if (value is css.HexColorTerm) {
       return stringToColor(value.text);
     } else if (value is css.FunctionTerm) {
@@ -84,7 +84,7 @@ class ExpressionMapping {
     }
   }
 
-  static Color rgbOrRgbaToColor(String text) {
+  static Color? rgbOrRgbaToColor(String text) {
     final rgbaText = text.replaceAll(')', '').replaceAll(' ', '');
     try {
       final rgbaValues =
