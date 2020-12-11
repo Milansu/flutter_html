@@ -9,7 +9,7 @@ import 'package:html/src/query_selector.dart';
 class StyledElement {
   final String name;
   final String? elementId;
-  final List<String>? elementClasses;
+  final List<String> elementClasses;
   List<StyledElement>? children;
   Style? style;
   final dom.Node? _node;
@@ -17,7 +17,7 @@ class StyledElement {
   StyledElement({
     String? name,
     this.elementId,
-    this.elementClasses,
+    this.elementClasses = const [],
     this.children,
     this.style,
     dom.Element? node,
@@ -38,7 +38,7 @@ class StyledElement {
   @override
   String toString() {
     String selfData =
-        "[$name] ${children?.length ?? 0} ${elementClasses?.isNotEmpty == true ? 'C:${elementClasses.toString()}' : ''}${elementId?.isNotEmpty == true ? 'ID: $elementId' : ''}";
+        "[$name] ${children?.length ?? 0} ${elementClasses.isNotEmpty ? 'C:${elementClasses.toString()}' : ''}${elementId?.isNotEmpty == true ? 'ID: $elementId' : ''}";
     children?.forEach((child) {
       selfData += ("\n${child.toString()}")
           .replaceAll(RegExp("^", multiLine: true), "-");
