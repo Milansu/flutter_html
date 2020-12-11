@@ -28,10 +28,10 @@ class TableLayoutElement extends LayoutElement {
 
   @override
   Widget toWidget(RenderContext context) {
-    final colWidths = children!
+    final colWidths = children
         .where((c) => c.name == "colgroup")
         .map((group) {
-          return group.children!.where((c) => c.name == "col").map((c) {
+          return group.children.where((c) => c.name == "col").map((c) {
             final widthStr = c.attributes["width"] ?? "";
             if (widthStr.endsWith("%")) {
               final width =
@@ -57,7 +57,7 @@ class TableLayoutElement extends LayoutElement {
         height: style!.height,
         child: Table(
           columnWidths: colWidths,
-          children: children!
+          children: children
               .map((c) {
                 if (c is TableSectionLayoutElement) {
                   return c.toTableRows(context);
@@ -84,7 +84,7 @@ class TableSectionLayoutElement extends LayoutElement {
   }
 
   List<TableRow> toTableRows(RenderContext context) {
-    return children!.map((c) {
+    return children.map((c) {
       if (c is TableRowLayoutElement) {
         return c.toTableRow(context);
       }
@@ -111,7 +111,7 @@ class TableRowLayoutElement extends LayoutElement {
           border: style!.border,
           color: style!.backgroundColor,
         ),
-        children: children!
+        children: children
             .map((c) {
               final cstyle = c.style!;
               if (c is StyledElement && c.name == 'td' || c.name == 'th') {

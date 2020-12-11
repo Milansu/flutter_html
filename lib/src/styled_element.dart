@@ -10,7 +10,7 @@ class StyledElement {
   final String name;
   final String? elementId;
   final List<String> elementClasses;
-  List<StyledElement>? children;
+  final List<StyledElement> children;
   Style? style;
   final dom.Node? _node;
 
@@ -18,10 +18,11 @@ class StyledElement {
     String? name,
     this.elementId,
     this.elementClasses = const [],
-    this.children,
+    List<StyledElement>? children,
     this.style,
     dom.Element? node,
   }) : this.name = name ?? "[[No name]]",
+    this.children = children ?? [],
     this._node = node;
 
   bool matchesSelector(String selector) =>
@@ -38,8 +39,8 @@ class StyledElement {
   @override
   String toString() {
     String selfData =
-        "[$name] ${children?.length ?? 0} ${elementClasses.isNotEmpty ? 'C:${elementClasses.toString()}' : ''}${elementId?.isNotEmpty == true ? 'ID: $elementId' : ''}";
-    children?.forEach((child) {
+        "[$name] ${children.length} ${elementClasses.isNotEmpty ? 'C:${elementClasses.toString()}' : ''}${elementId?.isNotEmpty == true ? 'ID: $elementId' : ''}";
+    children.forEach((child) {
       selfData += ("\n${child.toString()}")
           .replaceAll(RegExp("^", multiLine: true), "-");
     });
