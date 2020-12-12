@@ -465,15 +465,15 @@ class HtmlParser extends StatelessWidget {
   static StyledElement _processListCharactersRecursive(
       StyledElement tree, ListQueue<Context<int>> olStack) {
     if (tree.name == 'ol') {
-      olStack.add(Context(0));
+      final start = int.tryParse(tree.attributes['start'] ?? '') ?? 1;
+      olStack.add(Context(start));
     } else if (tree.style!.display == Display.LIST_ITEM) {
       switch (tree.style!.listStyleType ?? ListStyleType.DISC) {
         case ListStyleType.DISC:
           tree.style!.markerContent = '•';
           break;
         case ListStyleType.DECIMAL:
-          olStack.last.data += 1;
-          tree.style!.markerContent = '${olStack.last.data}.';
+          tree.style!.markerContent = '${olStack.last.data++}.';
       }
     }
 
