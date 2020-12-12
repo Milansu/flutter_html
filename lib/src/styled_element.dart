@@ -12,7 +12,7 @@ class StyledElement {
   final List<String> elementClasses;
   final List<StyledElement> children;
   Style? style;
-  final dom.Node? _node;
+  final dom.Element? _node;
 
   StyledElement({
     String? name,
@@ -26,15 +26,15 @@ class StyledElement {
     this._node = node;
 
   bool matchesSelector(String selector) =>
-      _node != null && matches(_node, selector);
+      _node != null && matches(_node!, selector);
 
   Map<String, String> get attributes =>
-      _node?.attributes?.map((key, value) {
-        return MapEntry(key, value);
+      _node?.attributes.map((key, value) {
+        return MapEntry(key as String, value);
       }) ??
       Map<String, String>();
 
-  dom.Element? get element => _node as dom.Element?;
+  dom.Element? get element => _node;
 
   @override
   String toString() {
@@ -100,7 +100,7 @@ StyledElement parseStyledElement(
       break;
     case "blockquote":
       //TODO(Sub6Resources) this is a workaround for collapsing margins. Remove.
-      if (element.parent.localName == "blockquote") {
+      if (element.parent?.localName == "blockquote") {
         styledElement.style = Style(
           margin: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 14.0),
           display: Display.BLOCK,
@@ -286,7 +286,7 @@ StyledElement parseStyledElement(
     case "ol":
     case "ul":
       //TODO(Sub6Resources): This is a workaround for collapsed margins. Remove.
-      if (element.parent.localName == "li") {
+      if (element.parent?.localName == "li") {
         styledElement.style = Style(
 //          margin: EdgeInsets.only(left: 30.0),
           display: Display.BLOCK,

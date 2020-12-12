@@ -74,7 +74,7 @@ class TableLayoutElement extends LayoutElement {
 
 class TableSectionLayoutElement extends LayoutElement {
   TableSectionLayoutElement({
-    required String name,
+    String? name,
     required List<StyledElement> children,
   }) : super(name: name, children: children);
 
@@ -95,7 +95,7 @@ class TableSectionLayoutElement extends LayoutElement {
 
 class TableRowLayoutElement extends LayoutElement {
   TableRowLayoutElement({
-    required String name,
+    String? name,
     required List<StyledElement> children,
     dom.Element? node,
   }) : super(name: name, children: children, node: node);

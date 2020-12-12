@@ -8,7 +8,7 @@ class InteractableElement extends StyledElement {
   String? href;
 
   InteractableElement({
-    required String name,
+    String? name,
     List<StyledElement>? children,
     Style? style,
     this.href,

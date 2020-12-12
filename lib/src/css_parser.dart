@@ -44,7 +44,7 @@ class DeclarationVisitor extends css.Visitor {
   void visitDeclaration(css.Declaration node) {
     _currentProperty = node.property;
     _result[_currentProperty] = <css.Expression>[];
-    node.expression.visit(this);
+    node.expression?.visit(this);
   }
 
   @override
@@ -62,9 +62,9 @@ class ExpressionMapping {
       return stringToColor(value.text);
     } else if (value is css.FunctionTerm) {
       if (value.text == 'rgba') {
-        return rgbOrRgbaToColor(value.span.text);
+        return rgbOrRgbaToColor(value.span!.text);
       } else if (value.text == 'rgb') {
-        return rgbOrRgbaToColor(value.span.text);
+        return rgbOrRgbaToColor(value.span!.text);
       }
     }
     return null;

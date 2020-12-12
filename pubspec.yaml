@@ -31,6 +31,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+dependency_overrides:
+  csslib:
+    git:
+      url: git://github.com/dart-lang/csslib.git
+      ref: master
+  html:
+    git:
+      url: git://github.com/dart-lang/html.git
+      ref: null_safety-migration
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

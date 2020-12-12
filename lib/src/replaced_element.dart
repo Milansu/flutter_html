@@ -298,7 +298,7 @@ class SvgContentElement extends ReplacedElement {
 }
 
 class EmptyContentElement extends ReplacedElement {
-  EmptyContentElement({String name = "empty"}) : super(name: name);
+  EmptyContentElement({String? name = "empty"}) : super(name: name);
 
   @override
   Widget? toWidget(_) => null;
@@ -337,7 +337,7 @@ class RubyElement extends ReplacedElement {
                                   .generateTextStyle()
                                   .copyWith(fontSize: rubySize))))),
               Container(
-                  child: Text(textNode!.text.trim(),
+                  child: Text(textNode!.text!.trim(),
                       style: context.style.generateTextStyle())),
             ],
           );
