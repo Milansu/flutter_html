@@ -2,15 +2,20 @@ import 'dart:ui';
 
 import 'package:csslib/visitor.dart' as css;
 import 'package:csslib/parser.dart' as cssparser;
+import 'package:flutter/material.dart';
 import 'package:flutter_html/style.dart';
 
 Style declarationsToStyle(Map<String, List<css.Expression>> declarations) {
+  double px(css.Expression value) {
+    // needs to support other units than pixels
+    return (value as css.LiteralTerm).value.toDouble();
+  }
+
   Style style = new Style();
   declarations.forEach((property, value) {
     switch (property) {
       case 'background-color':
-        style.backgroundColor =
-            ExpressionMapping.expressionToColor(value.first);
+        style.backgroundColor = ExpressionMapping.expressionToColor(value.first);
         break;
       case 'color':
         style.color = ExpressionMapping.expressionToColor(value.first);
@@ -18,7 +23,37 @@ Style declarationsToStyle(Map<String, List<css.Expression>> declarations) {
       case 'text-align':
         style.textAlign = ExpressionMapping.expressionToTextAlign(value.first);
         break;
-
+      case 'padding':
+        if (value.length == 0) {
+          style.padding = EdgeInsets.zero;
+        } else if (value.length == 1) {
+          style.padding = EdgeInsets.all(px(value.single));
+        } else if (value.length == 2) {
+          style.padding = EdgeInsets.symmetric(
+            vertical: px(value[0]),
+            horizontal: px(value[1]),
+          );
+        } else {
+          style.padding = EdgeInsets.only(
+            top: px(value[0]),
+            right: px(value[1]),
+            bottom: px(value[2]),
+            left: value.length < 4 ? 0 : px(value[3]),
+          );
+        }
+        break;
+      case 'padding-left':
+        style.padding = (style.padding ?? EdgeInsets.zero).copyWith(left: px(value.single));
+        break;
+      case 'padding-right':
+        style.padding = (style.padding ?? EdgeInsets.zero).copyWith(right: px(value.single));
+        break;
+      case 'padding-top':
+        style.padding = (style.padding ?? EdgeInsets.zero).copyWith(top: px(value.single));
+        break;
+      case 'padding-bottom':
+        style.padding = (style.padding ?? EdgeInsets.zero).copyWith(bottom: px(value.single));
+        break;
     }
   });
   return style;
