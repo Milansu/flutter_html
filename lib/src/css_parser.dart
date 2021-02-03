@@ -23,7 +23,7 @@ Style declarationsToStyle(Map<String, List<css.Expression>> declarations) {
       case 'text-align':
         style.textAlign = ExpressionMapping.expressionToTextAlign(value.first);
         break;
-      case 'padding':
+      case 'margin':
         if (value.length == 0) {
           style.padding = EdgeInsets.zero;
         } else if (value.length == 1) {
@@ -42,16 +42,16 @@ Style declarationsToStyle(Map<String, List<css.Expression>> declarations) {
           );
         }
         break;
-      case 'padding-left':
+      case 'margin-left':
         style.padding = (style.padding ?? EdgeInsets.zero).copyWith(left: px(value.single));
         break;
-      case 'padding-right':
+      case 'margin-right':
         style.padding = (style.padding ?? EdgeInsets.zero).copyWith(right: px(value.single));
         break;
-      case 'padding-top':
+      case 'margin-top':
         style.padding = (style.padding ?? EdgeInsets.zero).copyWith(top: px(value.single));
         break;
-      case 'padding-bottom':
+      case 'margin-bottom':
         style.padding = (style.padding ?? EdgeInsets.zero).copyWith(bottom: px(value.single));
         break;
     }
